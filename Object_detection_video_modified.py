@@ -112,10 +112,6 @@ def region_of_interest(img, vertices):
     cv2.fillPoly(mask, vertices, ignore_mask_color)
     masked_image = cv2.bitwise_and(img, mask)
     return masked_image
-
-
-
-
 	
 while(video.isOpened()):
 
@@ -123,7 +119,7 @@ while(video.isOpened()):
     # i.e. a single-column array, where each item in the column has the pixel RGB value
     ret, frame = video.read()
     stime = time.time()
-#	text=('This image is:', type(frame), 'with dimension:', frame.shape)
+
     rows, cols = frame.shape[:2]
     bottom_left  = [int(cols*0.20), int(rows*0.95)]
     top_left     = [int(cols*0.40), int(rows*0.40)]
@@ -136,10 +132,6 @@ while(video.isOpened()):
     cv2.line(frame,tuple(top_left),tuple(bottom_left), (255, 0, 0), 5)
     cv2.line(frame,tuple(top_left),tuple(top_right), (255, 0, 0), 5)
 	
-    steering_suggest = 30
-#    string_steering = 'you need to turn right by %f cm'%(steering_suggest)
-#    cv2.putText(frame,string_steering, (50, 50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2)
-	
     copied = np.copy(frame)
     interested=region_of_interest(copied,vertices)
 	
@@ -149,9 +141,6 @@ while(video.isOpened()):
     (boxes, scores, classes, num) = sess.run(
         [detection_boxes, detection_scores, detection_classes, num_detections],
         feed_dict={image_tensor: frame_expanded})
-
-#    string='%d' %(z)
-#    cv2.putText(frame,string, (50, 50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2)
 	
     # Draw the results of the detection (aka 'visulaize the results')
     vis_util.visualize_boxes_and_labels_on_image_array(
@@ -191,11 +180,7 @@ while(video.isOpened()):
 	
     if scores.max() > 0.9:
      if ymax >= bottom_right[0]:
-      cv2.putText(frame,'Proximity Alert!!!', (350, 150),cv2.FONT_HERSHEY_SIMPLEX,1.5,(255,0,0),2)
-    
-#    cv2.putText(frame,xmin, (60, 50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2)
-#    cv2.putText(frame,ymax, (70, 50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2)
- #   cv2.putText(frame,xmax, (80, 50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2)	
+      cv2.putText(frame,'Proximity Alert!!!', (350, 150),cv2.FONT_HERSHEY_SIMPLEX,1.5,(255,0,0),2)	
 	
     # All the results have been drawn on the frame, so it's time to display it.
 #    output = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
